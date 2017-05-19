@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
                         for (Hamster item:hamsterList
                              ) {
                             Log.d(LOG_TAG, "hamster title = " + item.getTitle());
+                            Log.d(LOG_TAG, "hamster description = " + item.getDescription());
+                            Log.d(LOG_TAG, "hamster imageURL = " + item.getImageURL());
                         }
                     } else {
 
