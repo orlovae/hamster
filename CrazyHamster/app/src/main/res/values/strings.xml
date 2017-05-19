@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Crazy Hamster</string>
+
+    <!-- Tab All Hamster -->
+    <string name="tab_all_hamster">All hamster</string>
+
+    <!-- Tab Favorites -->
+    <string name="tab_like_hamster">Like hamster</string>
 </resources>
