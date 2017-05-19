@@ -9,7 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.aleksandrorlov.crazyhamster.rest.ApiController;
+import ru.aleksandrorlov.crazyhamster.controllers.ApiController;
 import ru.aleksandrorlov.crazyhamster.model.Hamster;
 import ru.aleksandrorlov.crazyhamster.rest.ApiUnrealMojo;
 
@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Hamster>> call, Response<List<Hamster>> response) {
                 try {
                     if (response.isSuccessful()){
-                        List<Hamster> hamsterList = response.body();
-                        for (Hamster item:hamsterList
+                        List<Hamster> hamsters = response.body();
+                        for (Hamster item:hamsters
                              ) {
                             Log.d(LOG_TAG, "hamster title = " + item.getTitle());
                             Log.d(LOG_TAG, "hamster description = " + item.getDescription());

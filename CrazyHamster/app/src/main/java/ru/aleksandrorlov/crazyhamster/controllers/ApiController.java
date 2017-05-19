@@ -1,4 +1,4 @@
-package ru.aleksandrorlov.crazyhamster.rest;
+package ru.aleksandrorlov.crazyhamster.controllers;
 
 import android.util.Log;
 
@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.aleksandrorlov.crazyhamster.rest.ApiUnrealMojo;
 
 /**
  * Created by alex on 19.05.17.

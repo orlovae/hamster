@@ -22,14 +22,16 @@ public class Hamster {
     @SerializedName("image")
     @Expose
     private String imageURL;
+    private boolean likeHamster;
 
     public Hamster() {
     }
 
-    public Hamster(String title, String description, String imageURL) {
+    public Hamster(String title, String description, String imageURL, boolean likeHamster) {
         this.title = title;
         this.description = description;
         this.imageURL = imageURL;
+        this.likeHamster = likeHamster;
     }
 
     public String getTitle() {
@@ -56,6 +58,14 @@ public class Hamster {
         this.imageURL = imageURL;
     }
 
+    public boolean isLikeHamster() {
+        return likeHamster;
+    }
+
+    public void setLikeHamster(boolean likeHamster) {
+        this.likeHamster = likeHamster;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -63,7 +73,8 @@ public class Hamster {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(title).append(description).append(imageURL).toHashCode();
+        return new HashCodeBuilder().append(title).append(description).append(imageURL)
+                .append(likeHamster).toHashCode();
     }
 
     @Override
@@ -76,7 +87,7 @@ public class Hamster {
         }
         Hamster rhs = ((Hamster) other);
         return new EqualsBuilder().append(title, rhs.title).append(description, rhs.description).
-                append(imageURL, rhs.imageURL).isEquals();
+                append(imageURL, rhs.imageURL).append(likeHamster, rhs.likeHamster).isEquals();
     }
 
 }
