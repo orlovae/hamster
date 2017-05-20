@@ -3,7 +3,9 @@
 
     <!-- Tab All Hamster -->
     <string name="tab_all_hamster">All hamster</string>
+    <string name="select_like_hamster">&#9829;</string>
+    <string name="un_select_like_hamster">&#9825;</string>
 
-    <!-- Tab Favorites -->
+    <!-- Tab Like Hamster -->
     <string name="tab_like_hamster">Like hamster</string>
 </resources>
