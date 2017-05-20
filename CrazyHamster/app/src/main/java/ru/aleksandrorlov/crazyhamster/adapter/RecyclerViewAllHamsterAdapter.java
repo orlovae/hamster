@@ -3,12 +3,24 @@ package ru.aleksandrorlov.crazyhamster.adapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URL;
 
 import ru.aleksandrorlov.crazyhamster.R;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
@@ -60,12 +72,23 @@ public class RecyclerViewAllHamsterAdapter extends
 
         int idColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_ID);
         int titleColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_TITLE);
+        int imageURLColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_URL);
+        int imagePathColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_PATH);
         int likeHamsterColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_FAVORITE);
 
         int id = dataCursor.getInt(idColIndex);
         String titleFromCursor = dataCursor.getString(titleColIndex);
-        int likeHamstere = dataCursor.getInt(likeHamsterColIndex);
-        boolean likeHamsterFromCursor = castIntToBoolean(likeHamstere);
+        String imageURL = dataCursor.getString(imageURLColIndex);
+
+
+//        String imagePath = dataCursor.getString(imagePathColIndex);
+
+        int likeHamster = dataCursor.getInt(likeHamsterColIndex);
+        boolean likeHamsterFromCursor = castIntToBoolean(likeHamster);
+
+        Picasso.with(context)
+                .load(imageURL)
+                .into(getTarget(imageURL));
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){
@@ -123,6 +146,7 @@ public class RecyclerViewAllHamsterAdapter extends
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle, textViewLikeHamster;
+        ImageView imageView;
 
 
         public ViewHolder(View itemView) {
@@ -132,9 +156,51 @@ public class RecyclerViewAllHamsterAdapter extends
 
         private void initView(View itemView){
             Log.d(LOG_TAG, "Start initView");
+            imageView = (ImageView)itemView.findViewById(R.id.image_view);
             textViewTitle = (TextView)itemView.findViewById(R.id.text_view_title);
             textViewLikeHamster = (TextView)itemView.findViewById(R.id.text_view_like_hamster);
 
         }
+    }
+
+    private Target getTarget(String imageURL){
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File file = new File(context.getFilesDir(), createNameFile(imageURL));
+                        Log.d(LOG_TAG, "file = " + file.toString());
+
+                        try {
+                            file.createNewFile();
+                            FileOutputStream fos = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75 , fos);
+                            fos.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        return target;
+    }
+
+    private String createNameFile(String imageURL){
+        Uri uri = Uri.parse(imageURL);
+        return uri.getLastPathSegment();
     }
 }

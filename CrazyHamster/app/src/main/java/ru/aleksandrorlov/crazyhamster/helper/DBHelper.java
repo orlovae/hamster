@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + Contract.Hamster.COLUMN_TITLE + " text,"
             + Contract.Hamster.COLUMN_DESCRIPTION + " text,"
             + Contract.Hamster.COLUMN_IMAGE_URL + " text,"
+            + Contract.Hamster.COLUMN_IMAGE_PATH + " text,"
             + Contract.Hamster.COLUMN_FAVORITE + " integer);";
 
     public DBHelper(Context context){

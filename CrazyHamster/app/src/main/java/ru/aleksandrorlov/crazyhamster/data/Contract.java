@@ -25,6 +25,7 @@ public final class Contract {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_IMAGE_URL = "imageURL";
+        public static final String COLUMN_IMAGE_PATH = "imagePath";
         public static final String COLUMN_FAVORITE = "favorites";
 
         public static final String PATH_HAMSTER = TABLE_NAME;
