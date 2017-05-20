@@ -17,8 +17,9 @@ import ru.aleksandrorlov.crazyhamster.model.Hamster;
 public class CursorAdapter {
     private final String LOG_TAG = this.getClass().getSimpleName();
     private List<Hamster> hamsters;
+    private Hamster hamster;
 
-    public List<Hamster> getListToCursor(Cursor cursor){
+    public List<Hamster> getListToCursor(Cursor cursor, boolean onLikeHamster){
         Log.d(LOG_TAG, "Start getListToCursor");
         if (hamsters == null) {
             hamsters = new ArrayList<>();
@@ -36,11 +37,17 @@ public class CursorAdapter {
                     String titleFromCursor = cursor.getString(titleColIndex);
                     String descripionFromCursor = cursor.getString(descriptionColIndex);
                     String imageURLFromCursor = cursor.getString(imageURLColIndex);
-                    int favorite = cursor.getInt(favoriteColIndex);
-                    boolean favoriteFromCursor = castIntToBoolean(favorite);
+                    if (onLikeHamster) {
+                        int favorite = cursor.getInt(favoriteColIndex);
+                        boolean favoriteFromCursor = castIntToBoolean(favorite);
 
-                    Hamster hamster = new Hamster(titleFromCursor, descripionFromCursor,
-                            imageURLFromCursor, favoriteFromCursor);
+//                        hamster = new Hamster(titleFromCursor, descripionFromCursor,
+//                            imageURLFromCursor, favoriteFromCursor);
+                    } else {
+                        hamster = new Hamster(titleFromCursor, descripionFromCursor,
+                                imageURLFromCursor);
+                    }
+
 
                     hamsters.add(hamster);
                 } while (cursor.moveToNext());
