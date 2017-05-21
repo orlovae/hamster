@@ -5,10 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-
 import ru.aleksandrorlov.crazyhamster.R;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
@@ -30,12 +23,14 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class RecyclerViewAllHamsterAdapter extends
-        RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder>{
+        RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder> implements Target{
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private Context context;
 
     private Cursor dataCursor;
+
+    String imageURL = "";
 
     public RecyclerViewAllHamsterAdapter(Context context, Cursor cursor) {
         this.context = context;
@@ -57,7 +52,7 @@ public class RecyclerViewAllHamsterAdapter extends
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(LOG_TAG, "Start onCreateViewHolder");
+//        Log.d(LOG_TAG, "Start onCreateViewHolder");
         View view = LayoutInflater.from(context).inflate(R.layout.list_view_item_all_hamster_layout,
                 parent, false);
 
@@ -66,7 +61,7 @@ public class RecyclerViewAllHamsterAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(LOG_TAG, "Start onBindViewHolder");
+//        Log.d(LOG_TAG, "Start onBindViewHolder");
 
         dataCursor.moveToPosition(position);
 
@@ -78,7 +73,7 @@ public class RecyclerViewAllHamsterAdapter extends
 
         int id = dataCursor.getInt(idColIndex);
         String titleFromCursor = dataCursor.getString(titleColIndex);
-        String imageURL = dataCursor.getString(imageURLColIndex);
+        imageURL = dataCursor.getString(imageURLColIndex);
 
 
 //        String imagePath = dataCursor.getString(imagePathColIndex);
@@ -86,9 +81,9 @@ public class RecyclerViewAllHamsterAdapter extends
         int likeHamster = dataCursor.getInt(likeHamsterColIndex);
         boolean likeHamsterFromCursor = castIntToBoolean(likeHamster);
 
-        Picasso.with(context)
-                .load(imageURL)
-                .into(getTarget(imageURL));
+//        Picasso.with(context)
+//                .load(imageURL)
+//                .into(this);
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){
@@ -140,8 +135,23 @@ public class RecyclerViewAllHamsterAdapter extends
 
     @Override
     public int getItemCount() {
-        Log.d(LOG_TAG, "Start getItemCount");
+//        Log.d(LOG_TAG, "Start getItemCount");
         return (dataCursor == null) ? 0 : dataCursor.getCount();
+    }
+
+    @Override
+    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+    }
+
+    @Override
+    public void onBitmapFailed(Drawable errorDrawable) {
+
+    }
+
+    @Override
+    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -155,52 +165,11 @@ public class RecyclerViewAllHamsterAdapter extends
         }
 
         private void initView(View itemView){
-            Log.d(LOG_TAG, "Start initView");
+//            Log.d(LOG_TAG, "Start initView");
             imageView = (ImageView)itemView.findViewById(R.id.image_view);
             textViewTitle = (TextView)itemView.findViewById(R.id.text_view_title);
             textViewLikeHamster = (TextView)itemView.findViewById(R.id.text_view_like_hamster);
 
         }
-    }
-
-    private Target getTarget(String imageURL){
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        File file = new File(context.getFilesDir(), createNameFile(imageURL));
-                        Log.d(LOG_TAG, "file = " + file.toString());
-
-                        try {
-                            file.createNewFile();
-                            FileOutputStream fos = new FileOutputStream(file);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75 , fos);
-                            fos.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        return target;
-    }
-
-    private String createNameFile(String imageURL){
-        Uri uri = Uri.parse(imageURL);
-        return uri.getLastPathSegment();
     }
 }

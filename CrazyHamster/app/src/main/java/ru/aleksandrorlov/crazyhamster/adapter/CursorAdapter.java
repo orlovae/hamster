@@ -20,7 +20,7 @@ public class CursorAdapter {
     private Hamster hamster;
 
     public List<Hamster> getListToCursor(Cursor cursor, boolean onLikeHamster){
-        Log.d(LOG_TAG, "Start getListToCursor");
+//        Log.d(LOG_TAG, "Start getListToCursor");
         if (hamsters == null) {
             hamsters = new ArrayList<>();
         } else {
