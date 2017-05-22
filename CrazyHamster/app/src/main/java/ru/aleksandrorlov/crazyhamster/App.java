@@ -65,8 +65,11 @@ public class App extends Application {
     public void checkDataBase (List<Hamster> hamsters){
         Log.d(LOG_TAG, "Start checkDataBase");
 
+        String[] projection = {Contract.Hamster.COLUMN_TITLE, Contract.Hamster.COLUMN_DESCRIPTION,
+                Contract.Hamster.COLUMN_IMAGE_URL};
+
         Cursor cursor = getContentResolver().query(Contract.Hamster.CONTENT_URI,
-                null, null, null, null);
+                projection, null, null, null);
 
         CursorAdapter cursorAdapter = new CursorAdapter();
         List<Hamster> hamstersFromCursor = cursorAdapter.getListToCursor(cursor, false);
@@ -79,7 +82,7 @@ public class App extends Application {
         if (cursor != null) {
             cursor.close();
         }
-        downloadImage();
+
     }
 
     private void createNewHamsterTable(List<Hamster> hamsters){
@@ -93,7 +96,7 @@ public class App extends Application {
             cv.put(Contract.Hamster.COLUMN_IMAGE_URL, item.getImageURL());
             getContentResolver().insert(Contract.Hamster.CONTENT_URI, cv);
         }
-
+        downloadImage();
     }
 
     private void downloadImage () {

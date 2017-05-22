@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.File;
+
 import ru.aleksandrorlov.crazyhamster.R;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
@@ -23,18 +26,21 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class RecyclerViewAllHamsterAdapter extends
-        RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder> implements Target{
+        RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder> implements Target {
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private Context context;
 
     private Cursor dataCursor;
 
-    String imageURL = "";
+    private int width, height;
 
-    public RecyclerViewAllHamsterAdapter(Context context, Cursor cursor) {
+
+    public RecyclerViewAllHamsterAdapter(Context context, Cursor cursor, int width, int height) {
         this.context = context;
         this.dataCursor = cursor;
+        this.width = width;
+        this.height = height;
     }
 
     public Cursor swapCursor (Cursor cursor){
@@ -67,23 +73,22 @@ public class RecyclerViewAllHamsterAdapter extends
 
         int idColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_ID);
         int titleColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_TITLE);
-        int imageURLColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_URL);
         int imagePathColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_PATH);
         int likeHamsterColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_FAVORITE);
 
         int id = dataCursor.getInt(idColIndex);
         String titleFromCursor = dataCursor.getString(titleColIndex);
-        imageURL = dataCursor.getString(imageURLColIndex);
-
-
-//        String imagePath = dataCursor.getString(imagePathColIndex);
+        String imagePath = dataCursor.getString(imagePathColIndex);
 
         int likeHamster = dataCursor.getInt(likeHamsterColIndex);
         boolean likeHamsterFromCursor = castIntToBoolean(likeHamster);
 
-//        Picasso.with(context)
-//                .load(imageURL)
-//                .into(this);
+        if (imagePath != null) {
+            Picasso.with(context)
+                    .load(imagePath)
+                    .resize(width, height)
+                    .into(holder.imageView);
+        }
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){

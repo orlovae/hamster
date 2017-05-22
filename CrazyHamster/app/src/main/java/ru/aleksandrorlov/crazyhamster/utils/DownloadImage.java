@@ -1,5 +1,7 @@
 package ru.aleksandrorlov.crazyhamster.utils;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
@@ -14,6 +16,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
+
+import ru.aleksandrorlov.crazyhamster.data.Contract;
 
 /**
  * Created by alex on 21.05.17.
@@ -51,8 +55,7 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                     ContextWrapper cw = new ContextWrapper(context);
                     File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                     File path = new File(directory, createNameFile(url));
-                    Log.d(LOG_TAG, "path: " + path.getAbsolutePath());
-                    entry.setValue(path.getAbsolutePath());
+                    entry.setValue("file://" + path.getAbsolutePath());
                     FileOutputStream out = new FileOutputStream(path);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                     out.flush();
@@ -75,9 +78,17 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        //здесь нужно писать метод добавления в базу данных путей для картинок.
+        ContentValues cv = new ContentValues();
+        for (Map.Entry<Integer, String> entry : mapForDownloadImage.entrySet()
+                ) {
+            int id = entry.getKey();
+            cv.put(Contract.Hamster.COLUMN_IMAGE_PATH, entry.getValue());
+            Uri uri = ContentUris.withAppendedId(Contract.Hamster.CONTENT_URI, id);
+
+            context.getContentResolver().update(uri, cv, null, null);
+            cv.clear();
+        }
         //может для картинок, которые выбросили исключение, сделать свою картинку в ресурсах, путь к
         //которой писать в базу.
-
     }
 }

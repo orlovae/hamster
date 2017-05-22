@@ -10,6 +10,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +25,25 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class TabFragmentAllHamster extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private final String LOG_TAG = getClass().getSimpleName();
     private RecyclerView recyclerViewAllHamster;
     private RecyclerViewAllHamsterAdapter adapter;
+    private int height, width;
 
     private int LOADER_ID = 1;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        DisplayMetrics metrics;
+        metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        width = (int)Math.round(metrics.heightPixels * 0.2);//TODO вынести в константы
+        height = (int)Math.round(metrics.widthPixels * 0.2);//коэффициент сжатия картинок.
+        Log.d(LOG_TAG, "width = " + width + "; height = " + height);
+
+    }
 
     @Nullable
     @Override
@@ -47,7 +64,7 @@ public class TabFragmentAllHamster extends Fragment implements LoaderManager.Loa
     private void initRecyclerView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        adapter = new RecyclerViewAllHamsterAdapter(getActivity(), null);
+        adapter = new RecyclerViewAllHamsterAdapter(getActivity(), null, width, height);
         recyclerViewAllHamster.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL));
         recyclerViewAllHamster.setAdapter(adapter);
