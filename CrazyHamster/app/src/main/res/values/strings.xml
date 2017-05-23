@@ -8,4 +8,11 @@
 
     <!-- Tab Like Hamster -->
     <string name="tab_like_hamster">Like hamster</string>
+
+    <!-- Activity View Hamster -->
+    <string name="back"></string>
+
+    <!-- ToolBar -->
+    <string name="loop"></string>
+
 </resources>

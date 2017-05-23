@@ -39,10 +39,15 @@ public class TabFragmentAllHamster extends Fragment implements LoaderManager.Loa
         DisplayMetrics metrics;
         metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        width = (int)Math.round(metrics.heightPixels * 0.2);//TODO вынести в константы
-        height = (int)Math.round(metrics.widthPixels * 0.2);//коэффициент сжатия картинок.
-        Log.d(LOG_TAG, "width = " + width + "; height = " + height);
+        width = metrics.heightPixels;
+        height = metrics.widthPixels;
 
+        boolean isLandscape = width > height;
+
+        if (!isLandscape) {
+            width = metrics.widthPixels;
+            height = metrics.heightPixels;
+        }
     }
 
     @Nullable

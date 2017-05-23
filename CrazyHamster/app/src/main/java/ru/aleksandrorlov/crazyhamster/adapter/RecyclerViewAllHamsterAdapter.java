@@ -1,7 +1,9 @@
 package ru.aleksandrorlov.crazyhamster.adapter;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,14 +21,14 @@ import com.squareup.picasso.Target;
 import java.io.File;
 
 import ru.aleksandrorlov.crazyhamster.R;
+import ru.aleksandrorlov.crazyhamster.ViewHamsterActivity;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
 /**
  * Created by alex on 20.05.17.
  */
 
-public class RecyclerViewAllHamsterAdapter extends
-        RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder> implements Target {
+public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder>{
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private Context context;
@@ -73,11 +75,13 @@ public class RecyclerViewAllHamsterAdapter extends
 
         int idColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_ID);
         int titleColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_TITLE);
+        int descriptionColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_DESCRIPTION);
         int imagePathColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_PATH);
         int likeHamsterColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_FAVORITE);
 
         int id = dataCursor.getInt(idColIndex);
         String titleFromCursor = dataCursor.getString(titleColIndex);
+        String descriptionFromCursor = dataCursor.getString(descriptionColIndex);
         String imagePath = dataCursor.getString(imagePathColIndex);
 
         int likeHamster = dataCursor.getInt(likeHamsterColIndex);
@@ -86,9 +90,23 @@ public class RecyclerViewAllHamsterAdapter extends
         if (imagePath != null) {
             Picasso.with(context)
                     .load(imagePath)
-                    .resize(width, height)
+                    .resize((int)Math.round(width * 0.2), (int)Math.round(height * 0.2))
+                    //TODO вынести в константы коэффициент сжатия картинок.
                     .into(holder.imageView);
         }
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewHamsterActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("title", titleFromCursor);
+                intent.putExtra("description", descriptionFromCursor);
+                intent.putExtra("imagePath", imagePath);
+                intent.putExtra("likeHamster", likeHamsterFromCursor);
+                context.startActivity(intent);
+            }
+        });
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){
@@ -142,21 +160,6 @@ public class RecyclerViewAllHamsterAdapter extends
     public int getItemCount() {
 //        Log.d(LOG_TAG, "Start getItemCount");
         return (dataCursor == null) ? 0 : dataCursor.getCount();
-    }
-
-    @Override
-    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-    }
-
-    @Override
-    public void onBitmapFailed(Drawable errorDrawable) {
-
-    }
-
-    @Override
-    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
