@@ -10,9 +10,11 @@
     <string name="tab_like_hamster">Like hamster</string>
 
     <!-- Activity View Hamster -->
-    <string name="back"></string>
 
     <!-- ToolBar -->
-    <string name="loop"></string>
+    <string name="back">back</string>
+    <string name="search">search</string>
+    <string name="share">share</string>
+
 
 </resources>
