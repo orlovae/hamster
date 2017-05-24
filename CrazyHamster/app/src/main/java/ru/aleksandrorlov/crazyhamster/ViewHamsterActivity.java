@@ -4,8 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -25,10 +28,10 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
     private final String LOG_TAG = getClass().getSimpleName();
 
     private TextView textViewTitle, textViewDiscription, textViewLikeHamster;
-    private ImageView imageViewPhotoHamster, imageViewBack, imageViewShare;
+    private ImageView imageViewPhotoHamster;
 
     private String title, description, imagePath;
-    private int id, width;
+    private int id;
     private boolean likeHamster;
 
 
@@ -36,10 +39,44 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_hamster);
+        initToolbar();
         initIntent();
         initView();
         setView();
         onClickBehavior();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        try {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        toolbar.setLogo(R.mipmap.ic_launcher);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_item_search:
+                return true;
+            case R.id.menu_item_share:
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initIntent(){
@@ -54,9 +91,7 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
         textViewTitle = (TextView)findViewById(R.id.text_view_title);
         textViewDiscription = (TextView)findViewById(R.id.text_view_description);
         imageViewPhotoHamster = (ImageView)findViewById(R.id.image_view_photo_hamster);
-        imageViewBack = (ImageView)findViewById(R.id.image_view_back);
         textViewLikeHamster = (TextView)findViewById(R.id.text_view_like_hamster);
-        imageViewShare = (ImageView)findViewById(R.id.image_view_share);
     }
 
     private void setView(){
@@ -103,17 +138,12 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void  onClickBehavior(){
-        imageViewBack.setOnClickListener(this);
         textViewLikeHamster.setOnClickListener(this);
-        imageViewShare.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.image_view_back:
-                finish();
-                break;
             case R.id.text_view_like_hamster:
                 if (textViewLikeHamster.getText().toString().equals
                         (getString(R.string.un_select_like_hamster))){
@@ -122,8 +152,6 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
                     textViewLikeHamster.setText(getString(R.string.un_select_like_hamster));
                 }
                 selectLikeHamsterToHamsterTable(id, likeHamster);
-                break;
-            case R.id.image_view_share:
                 break;
         }
     }

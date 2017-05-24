@@ -3,29 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_item_back"
-        android:orderInCategory="10"
-        app:showAsAction="always"
-        android:title="@string/back" />
-
-    <item
-        android:id="@+id/menu_item_title"
-        android:orderInCategory="20"
-        app:showAsAction="always"
-        android:title="@string/app_name" />
-
-    <item
         android:id="@+id/menu_item_search"
-        android:orderInCategory="30"
+        android:orderInCategory="10"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/search"/>
 
     <item
         android:id="@+id/menu_item_share"
-        android:orderInCategory="40"
+        android:orderInCategory="20"
         android:icon="@android:drawable/ic_menu_share"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/share"/>
 
 </menu>
