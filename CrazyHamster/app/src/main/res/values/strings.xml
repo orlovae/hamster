@@ -16,5 +16,7 @@
     <string name="search">search</string>
     <string name="share">share</string>
 
+    <!-- ToolBar Share -->
+    <string name="action_share">search</string>
 
 </resources>

@@ -1,22 +1,22 @@
 package ru.aleksandrorlov.crazyhamster;
 
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.Locale;
 
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
@@ -29,6 +29,8 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
 
     private TextView textViewTitle, textViewDiscription, textViewLikeHamster;
     private ImageView imageViewPhotoHamster;
+
+    private ShareActionProvider provider;
 
     private String title, description, imagePath;
     private int id;
@@ -56,27 +58,6 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
         toolbar.setLogo(R.mipmap.ic_launcher);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.menu_item_search:
-                return true;
-            case R.id.menu_item_share:
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void initIntent(){
@@ -154,5 +135,39 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
                 selectLikeHamsterToHamsterTable(id, likeHamster);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu");
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+        provider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        provider.setShareIntent(createShareIntent());
+
+        return true;
+    }
+
+    private Intent createShareIntent() {
+        Log.d(LOG_TAG, "createShareIntent");
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        Uri uriImage = Uri.parse(imagePath);
+        Log.d(LOG_TAG, "uriImage = " + uriImage.toString());
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uriImage);
+        return shareIntent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
