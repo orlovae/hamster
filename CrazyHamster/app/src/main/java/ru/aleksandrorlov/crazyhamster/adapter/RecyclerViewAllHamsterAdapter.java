@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,16 +85,20 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
         String descriptionFromCursor = dataCursor.getString(descriptionColIndex);
         String imagePath = dataCursor.getString(imagePathColIndex);
 
+
         int likeHamster = dataCursor.getInt(likeHamsterColIndex);
         boolean likeHamsterFromCursor = castIntToBoolean(likeHamster);
 
+        Uri imageUri = null;
         if (imagePath != null) {
-            Picasso.with(context)
-                    .load(imagePath)
-                    .resize((int)Math.round(width * 0.2), (int)Math.round(height * 0.2))
-                    //TODO вынести в константы коэффициент сжатия картинок.
-                    .into(holder.imageView);
+            imageUri = Uri.fromFile(new File(imagePath));
         }
+
+        Picasso.with(context)
+                .load(imageUri)
+                .resize((int)Math.round(width * 0.2), (int)Math.round(height * 0.2))
+                //TODO вынести в константы коэффициент сжатия картинок.
+                .into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override

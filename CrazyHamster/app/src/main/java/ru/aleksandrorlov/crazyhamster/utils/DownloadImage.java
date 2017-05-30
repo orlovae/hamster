@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -25,9 +26,13 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
 
 public class DownloadImage extends AsyncTask<Void, Void, Void> {
     private final String LOG_TAG = this.getClass().getSimpleName();
+    private final String NAME_DIR = "hamsters";
+    private final String SCHEME = "file://";
 
     private Context context;
     private TreeMap<Integer, String> mapForDownloadImage;
+
+
 
     public DownloadImage (Context context, TreeMap<Integer, String> mapForDownloadImage){
         this.context = context;
@@ -38,10 +43,21 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         Log.d(LOG_TAG, "Start doInBackground");
 
+        File directory;
+        ContextWrapper cw = new ContextWrapper(context);
+        boolean SDWrite = isExternalStorageWritable();
+
+        if (SDWrite) {
+            directory = getAlbumStorageDir(context);
+        } else {
+            directory = cw.getDir(NAME_DIR, Context.MODE_PRIVATE);
+        }
+
         for (Map.Entry<Integer, String> entry : mapForDownloadImage.entrySet()
              ) {
             String url = entry.getValue();
             Bitmap bitmap = null;
+            File path = null;
             if (url != null) {
                 try {
                     InputStream inputStream = new URL(url).openStream();
@@ -52,10 +68,16 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                     e.printStackTrace();
                 }
                 try {
-                    ContextWrapper cw = new ContextWrapper(context);
-                    File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-                    File path = new File(directory, createNameFile(url));
-                    entry.setValue("file://" + path.getAbsolutePath());
+                    if (SDWrite) {
+                        path = new File(directory, createNameFile(url));
+                        entry.setValue(path.getAbsolutePath());
+                        Log.d(LOG_TAG, "File save to SD, path = " + path.getAbsolutePath().toString());
+                    } else {
+                        path = new File(directory, createNameFile(url));
+                        entry.setValue(SCHEME + path.getAbsolutePath());
+                        Log.d(LOG_TAG, "File save to internal memory, path = " + path.getAbsolutePath().toString());
+                    }
+
                     FileOutputStream out = new FileOutputStream(path);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                     out.flush();
@@ -90,5 +112,22 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         }
         //может для картинок, которые выбросили исключение, сделать свою картинку в ресурсах, путь к
         //которой писать в базу.
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public File getAlbumStorageDir(Context context) {
+        File file = new File(context.getExternalFilesDir(
+                Environment.DIRECTORY_PICTURES), NAME_DIR);
+        if (!file.mkdirs()) {
+            Log.e(LOG_TAG, "Directory not created");
+        }
+        return file;
     }
 }

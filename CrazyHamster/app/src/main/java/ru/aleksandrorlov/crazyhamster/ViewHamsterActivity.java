@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
 /**
@@ -87,7 +89,7 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
 
         if (imagePath != null) {
             Picasso.with(this)
-                    .load(imagePath)
+                    .load(Uri.fromFile(new File(imagePath)))
                     .resize(getWidth(), 0)
                     .into(imageViewPhotoHamster);
         }
