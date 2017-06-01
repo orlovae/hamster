@@ -91,6 +91,7 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
             Picasso.with(this)
                     .load(Uri.fromFile(new File(imagePath)))
                     .resize(getWidth(), 0)
+                    .placeholder(R.drawable.progress_animation)
                     .into(imageViewPhotoHamster);
         }
     }

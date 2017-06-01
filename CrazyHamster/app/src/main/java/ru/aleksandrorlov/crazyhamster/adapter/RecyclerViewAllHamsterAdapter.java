@@ -98,6 +98,7 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
                 .load(imageUri)
                 .resize((int)Math.round(width * 0.2), (int)Math.round(height * 0.2))
                 //TODO вынести в константы коэффициент сжатия картинок.
+                .placeholder(R.drawable.progress_animation)
                 .into(holder.imageView);
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
