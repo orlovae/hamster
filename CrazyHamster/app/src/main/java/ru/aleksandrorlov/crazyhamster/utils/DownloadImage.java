@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,7 +33,8 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
     private final String LOG_TAG = this.getClass().getSimpleName();
     private final String NAME_DIR = "hamsters";
     private final String SCHEME = "file://";
-    private final String ERROR_DOWNLOAD = "error_download_image.jpg";
+    private final String ERROR_DOWNLOAD = "error_download_image.png";
+    private final String FILE_EXTENSION_JPG = "jpg";
 
     private Context context;
     private TreeMap<Integer, String> mapForDownloadImage;
@@ -86,7 +88,8 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                 if (SDWrite) {
                     path = new File(directory, fileName);
                     entry.setValue(path.getAbsolutePath());
-                    Log.d(LOG_TAG, "File save to SD, path = " + path.getAbsolutePath().toString());
+                    Log.d(LOG_TAG, "File save to SD, path = " + path.getAbsolutePath().toString().
+                            substring(path.getAbsolutePath().toString().length()-3,path.getAbsolutePath().toString().length()));
                 } else {
                     path = new File(directory, fileName);
                     entry.setValue(SCHEME + path.getAbsolutePath());
@@ -94,7 +97,14 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                 }
 
                 FileOutputStream out = new FileOutputStream(path);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                String typeImage = getTypeImage(path);
+                Log.d(LOG_TAG, "typeImage.equals(FILE_EXTENSION_JPG) is " + typeImage.equals(FILE_EXTENSION_JPG));
+                if (typeImage.equals(FILE_EXTENSION_JPG)) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                } else {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                }
+
                 out.flush();
                 out.close();
             } catch (Exception e) {
@@ -152,5 +162,18 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         }
 
         return bitmap;
+    }
+
+    private String getTypeImage(File path) {
+        try {
+        /**3 - количество символов в расширении файла**/
+        int startSubstring = path.getAbsolutePath().toString().length() - 3;
+        int endSubstring = path.getAbsolutePath().toString().length();
+        return path.getAbsolutePath().toString().substring(startSubstring, endSubstring);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

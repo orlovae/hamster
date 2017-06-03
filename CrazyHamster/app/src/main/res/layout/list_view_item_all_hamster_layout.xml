@@ -10,7 +10,8 @@
         android:layout_height="match_parent"
         android:layout_weight="0.3"
         android:scaleType="centerInside"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:background="@null" />
 
     <TextView
         android:id="@+id/text_view_title"
