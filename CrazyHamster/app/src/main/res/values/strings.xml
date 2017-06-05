@@ -12,11 +12,8 @@
     <!-- Activity View Hamster -->
 
     <!-- ToolBar -->
-    <string name="back">back</string>
     <string name="search">search</string>
     <string name="share">share</string>
-
-    <!-- ToolBar Share -->
-    <string name="action_share">search</string>
+    <string name="about">about the developer</string>
 
 </resources>

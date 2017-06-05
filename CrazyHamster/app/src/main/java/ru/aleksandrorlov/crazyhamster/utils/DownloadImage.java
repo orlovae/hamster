@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v7.graphics.drawable.DrawableWrapper;
 import android.util.Log;
 
 import java.io.File;
@@ -22,7 +19,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ru.aleksandrorlov.crazyhamster.R;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
 
 /**
@@ -54,11 +50,14 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         ContextWrapper cw = new ContextWrapper(context);
         boolean SDWrite = isExternalStorageWritable();
 
+
         if (SDWrite) {
             directory = getAlbumStorageDir(context);
         } else {
             directory = cw.getDir(NAME_DIR, Context.MODE_PRIVATE);
         }
+
+        String pathError = getFileErrorDownloadImage(directory).getAbsolutePath();
 
         for (Map.Entry<Integer, String> entry : mapForDownloadImage.entrySet()
              ) {
@@ -75,12 +74,11 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                     fileName = createNameFile(url);
                 } catch (Exception e) {
                     Log.d(LOG_TAG, "Exception: " + fileName + " no download");
-                    bitmap = getErrorDownloadImage();
-                    fileName = ERROR_DOWNLOAD;
+                    entry.setValue(pathError);
                     e.printStackTrace();
                 }
             } else {
-                bitmap = getErrorDownloadImage();
+                bitmap = getBitmapErrorDownloadImage();
                 fileName = ERROR_DOWNLOAD;
             }
 
@@ -107,9 +105,11 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
 
                 out.flush();
                 out.close();
+
             } catch (Exception e) {
                 Log.d(LOG_TAG, "Exception: " + fileName + " no save");
                 e.printStackTrace();
+                entry.setValue(pathError);
             }
         }
         return null;
@@ -151,7 +151,7 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         return file;
     }
 
-    private Bitmap getErrorDownloadImage() {
+    private Bitmap getBitmapErrorDownloadImage() {
         Bitmap bitmap = null;
         try {
             InputStream inputStream = context.getAssets().open(ERROR_DOWNLOAD);
@@ -162,6 +162,21 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         }
 
         return bitmap;
+    }
+
+    private File getFileErrorDownloadImage(File directory) {
+        Bitmap bitmap = getBitmapErrorDownloadImage();
+        File file = new File(directory, ERROR_DOWNLOAD);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
     }
 
     private String getTypeImage(File path) {

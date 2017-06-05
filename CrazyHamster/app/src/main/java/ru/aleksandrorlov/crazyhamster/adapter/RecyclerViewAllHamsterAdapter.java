@@ -116,18 +116,17 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){
-            holder.textViewLikeHamster.setText(context.getString(R.string.select_like_hamster));
+            holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
         } else {
-            holder.textViewLikeHamster.setText(context.getString(R.string.un_select_like_hamster));
+            holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
         }
-        holder.textViewLikeHamster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.textViewLikeHamster.getText().toString().equals
-                        (context.getString(R.string.un_select_like_hamster))){
-                    holder.textViewLikeHamster.setText(context.getString(R.string.select_like_hamster));
+        holder.imageViewLikeHamster.setOnClickListener(new View.OnClickListener() {
+            @Override            public void onClick(View v) {
+                if (holder.imageViewLikeHamster.getDrawable().equals
+                        (R.drawable.ic_favorite_border_black_18dp)){
+                    holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
                 } else {
-                    holder.textViewLikeHamster.setText(context.getString(R.string.un_select_like_hamster));
+                    holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
                 }
                 selectLikeHamsterToHamsterTable(id, likeHamsterFromCursor);
             }
@@ -169,8 +168,8 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle, textViewLikeHamster;
-        ImageView imageView;
+        TextView textViewTitle;
+        ImageView imageView, imageViewLikeHamster;
 
 
         public ViewHolder(View itemView) {
@@ -182,7 +181,7 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 //            Log.d(LOG_TAG, "Start initView");
             imageView = (ImageView)itemView.findViewById(R.id.image_view);
             textViewTitle = (TextView)itemView.findViewById(R.id.text_view_title);
-            textViewLikeHamster = (TextView)itemView.findViewById(R.id.text_view_like_hamster);
+            imageViewLikeHamster = (ImageView) itemView.findViewById(R.id.image_view_like_hamster);
 
         }
     }

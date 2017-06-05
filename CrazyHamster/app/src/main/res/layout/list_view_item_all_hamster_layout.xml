@@ -20,8 +20,8 @@
         android:layout_weight="0.6"
         android:gravity="center_horizontal|center_vertical" />
 
-    <TextView
-        android:id="@+id/text_view_like_hamster"
+    <ImageView
+        android:id="@+id/image_view_like_hamster"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.1"

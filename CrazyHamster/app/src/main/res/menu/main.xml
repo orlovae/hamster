@@ -19,4 +19,11 @@
         android:title="@string/share"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
 
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="30"
+        android:title="@string/about"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_copyright"/>
+
 </menu>
