@@ -1,19 +1,92 @@
 <resources>
     <string name="app_name">Crazy Hamster</string>
 
-    <!-- Tab All Hamster -->
+    <!-- Tab All Hamster start -->
     <string name="tab_all_hamster">All hamster</string>
-    <string name="select_like_hamster">&#9829;</string>
-    <string name="un_select_like_hamster">&#9825;</string>
+    <!-- Tab All Hamster end -->
 
     <!-- Tab Like Hamster -->
     <string name="tab_like_hamster">Like hamster</string>
+    <!-- Tab Like Hamster end -->
 
-    <!-- Activity View Hamster -->
+    <!-- Activity View Hamster start -->
+    <string name="view_hamster">Selected hamster</string>
+    <!-- Activity View Hamster end -->
 
-    <!-- ToolBar -->
-    <string name="search">search</string>
-    <string name="share">share</string>
-    <string name="about">about the developer</string>
+    <!-- Activity Search Result start -->
+    <string name="search_result">Search result</string>
+    <!-- Activity Search Result end -->
+
+    <!-- ToolBar start -->
+    <string name="toolbar_search">search</string>
+    <string name="toolbar_share">share</string>
+    <string name="toolbar_about">about the developer</string>
+    <!-- ToolBar end -->
+
+    <!-- Activity About Me start -->
+    <string name="about_me">About me</string>
+    <string name="about_me_FIO">Орлов Александр Евгеньевич</string>
+    <string name="about_me_birthday">03.12.1976</string>
+    <string name="about_me_telefon">+79202875363</string>
+    <string name="about_me_e_mail">79202875363@ya.ru</string>
+    <string name="about_me_residence">Проживаю: г.Орёл, готов к переезду.</string>
+    <string name="about_me_desired_position">Желаемая должность – Junior Android developer</string>
+    <string name="about_me_desired_pay">Желаемая зарплата - 45 000 руб</string>
+    <string name="about_me_experience">Опыт работы — 15 лет</string>
+    <string name="about_me_education">Образование</string>
+    <string name="about_me_e_sertificate">Электронные сертификаты</string>
+    <string name="about_me_skills">Ключевые навыки</string>
+
+    <string name="about_me_experience_all">
+        &#8226; Май 2017— апрель 2017 (2 месяца)\n
+        Проект Мобилизация – разработка android клиента, с использованием API Переводчика.\n
+        https://github.com/orlovae/YandexTranslator\n
+        &#8226; Март 2017— февраль 2017 (2 месяца)\n
+        Geekbrains.ru – разработка android клиента, для отображения упоминаемым персонам на сайтах.\n
+        https://github.com/GeekBrainsPracticeTeam2\n
+        Разрабатывал интерфейс приложения, и работу всех Fragment, Activity.\n
+        Проект в настоящее время не закончен полностью.\n
+        &#8226; Февраль 2016 — март 2000\n
+        Работа не по специальности программиста.</string>
+
+    <string name="about_me_education_all">
+        1994 – 1999 Орёл ГТУ. Факультет пищевой промышленности – инженер.\n
+        1999 – 2000 Орловская региональная академия государственной службы. Факультет Юриспруденции – юрист.\n
+        2006 – 2010 Орёл ГТУ. Факультет заочного обучения – менеджер.
+    </string>
+    
+    <string name="about_me_e_sertificate_all">
+        2017 - Стажировка в GeekBrains. В формате вебинаров. No 0195785 от 28.03.2017\n
+        https://geekbrains.ru/certificates/195785\n
+        2017 - Android. Уровень 2. No 0163605 от 23.01.2017\n
+        https://geekbrains.ru/certificates/163605\n
+        2017 - Git. Быстрый старт. Инструмент командной разработки. No 0156631 от 05.01.2017\n
+        https://geekbrains.ru/certificates/156631\n
+        2017 - Android. Уровень 1. No 0147918 от 13.12.2016\n
+        https://geekbrains.ru/certificates/147918\n
+        2016 - Java. Уровень 2. No 0147920 от 13.12.2016\n
+        https://geekbrains.ru/certificates/147920
+    </string>
+
+    <string name="about_me_skills_all">
+        &#8226; SQLite – создание БД при старте приложения и работа с ней. Тестовое задание\n
+        https://github.com/orlovae/CatSales\n
+        &#8226; Git – работа в рамках стажировки, через консольный клиент SmartGit. Работа с ветками
+            (создание, объединение, разрешение конфликтов)\n
+        https://github.com/GeekBrainsPracticeTeam2\n
+        &#8226; Google maps – добавление маркеров на карту, и наполнение их данными из БД. Тестовое
+задание\n
+        https://github.com/orlovae/CatSales\n
+        &#8226; Fragment – создание и работа. Тестовое задание\n
+        https://github.com/orlovae/CatSales
+        работа в рамках стажировки https://github.com/GeekBrainsPracticeTeam2\n
+        &#8226; Intent – передача данных из DialogFragment во Fragment\n
+        https://github.com/GeekBrainsPracticeTeam2\n
+        &#8226; ContentProvider – асинхронный доступ к базе данных с использованием LoaderManager\n
+        https://github.com/orlovae/YandexTranslator\n
+        &#8226; Retrofit – отправка и получение запросов к API Переводчика\n
+        https://github.com/orlovae/YandexTranslator
+    </string>
+    <!-- Activity About Me end -->
 
 </resources>

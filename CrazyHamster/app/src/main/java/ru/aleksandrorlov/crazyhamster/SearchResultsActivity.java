@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -16,11 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import ru.aleksandrorlov.crazyhamster.adapter.RecyclerViewAllHamsterAdapter;
 import ru.aleksandrorlov.crazyhamster.data.Contract;
@@ -59,7 +56,6 @@ public class SearchResultsActivity extends AppCompatActivity implements LoaderMa
         } catch (Exception e) {
             e.printStackTrace();
         }
-        toolbar.setLogo(R.mipmap.ic_launcher);
     }
 
     private void initImageSize(){
@@ -108,6 +104,10 @@ public class SearchResultsActivity extends AppCompatActivity implements LoaderMa
         switch (id) {
             case android.R.id.home:
                 startActivity(new Intent(SearchResultsActivity.this, MainActivity.class));
+                return true;
+            case R.id.menu_item_about:
+                Intent intent = new Intent(SearchResultsActivity.this, AboutMeActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

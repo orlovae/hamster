@@ -9,20 +9,20 @@
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom"
-        android:title="@string/search"/>
+        android:title="@string/toolbar_search"/>
 
     <item
         android:id="@+id/menu_item_share"
         android:orderInCategory="20"
         android:icon="@android:drawable/ic_menu_share"
         app:showAsAction="ifRoom"
-        android:title="@string/share"
+        android:title="@string/toolbar_share"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
 
     <item
-        android:id="@+id/menu_about"
+        android:id="@+id/menu_item_about"
         android:orderInCategory="30"
-        android:title="@string/about"
+        android:title="@string/toolbar_about"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_copyright"/>
 

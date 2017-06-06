@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,8 +123,9 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
         }
         holder.imageViewLikeHamster.setOnClickListener(new View.OnClickListener() {
             @Override            public void onClick(View v) {
-                if (holder.imageViewLikeHamster.getDrawable().equals
-                        (R.drawable.ic_favorite_border_black_18dp)){
+                if (holder.imageViewLikeHamster.getDrawable().getConstantState().equals
+                        (ContextCompat.getDrawable(context,
+                                R.drawable.ic_favorite_border_black_18dp).getConstantState())){
                     holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
                 } else {
                     holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);

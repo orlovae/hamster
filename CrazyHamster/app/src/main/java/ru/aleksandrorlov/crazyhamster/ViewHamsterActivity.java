@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
@@ -29,8 +30,8 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
 public class ViewHamsterActivity extends AppCompatActivity implements View.OnClickListener {
     private final String LOG_TAG = getClass().getSimpleName();
 
-    private TextView textViewTitle, textViewDiscription, textViewLikeHamster;
-    private ImageView imageViewPhotoHamster;
+    private TextView textViewTitle, textViewDiscription;
+    private ImageView imageViewPhotoHamster, imageViewLikeHamster;
 
     private ShareActionProvider provider;
 
@@ -59,7 +60,6 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception e) {
             e.printStackTrace();
         }
-        toolbar.setLogo(R.mipmap.ic_launcher);
     }
 
     private void initIntent(){
@@ -74,7 +74,7 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
         textViewTitle = (TextView)findViewById(R.id.text_view_title);
         textViewDiscription = (TextView)findViewById(R.id.text_view_description);
         imageViewPhotoHamster = (ImageView)findViewById(R.id.image_view_photo_hamster);
-        textViewLikeHamster = (TextView)findViewById(R.id.text_view_like_hamster);
+        imageViewLikeHamster = (ImageView)findViewById(R.id.image_view_like_hamster);
     }
 
     private void setView(){
@@ -82,9 +82,9 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
         textViewDiscription.setText(description);
 
         if (likeHamster){
-            textViewLikeHamster.setText(getString(R.string.select_like_hamster));
+            imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
         } else {
-            textViewLikeHamster.setText(getString(R.string.un_select_like_hamster));
+            imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
         }
 
         if (imagePath != null) {
@@ -122,18 +122,23 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void  onClickBehavior(){
-        textViewLikeHamster.setOnClickListener(this);
+        imageViewLikeHamster.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.text_view_like_hamster:
-                if (textViewLikeHamster.getText().toString().equals
-                        (getString(R.string.un_select_like_hamster))){
-                    textViewLikeHamster.setText(getString(R.string.select_like_hamster));
+            case R.id.image_view_like_hamster:
+                Log.d(LOG_TAG, "imageViewLikeHamster = " + imageViewLikeHamster.getDrawable());
+                Log.d(LOG_TAG, "ic_favorite_black_18dp = " + R.drawable.ic_favorite_black_18dp);
+                Log.d(LOG_TAG, "ic_favorite_border_black_18dp = " + R.drawable.ic_favorite_border_black_18dp);
+
+                if (imageViewLikeHamster.getDrawable().getConstantState().equals
+                        (ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.ic_favorite_border_black_18dp).getConstantState())){
+                    imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
                 } else {
-                    textViewLikeHamster.setText(getString(R.string.un_select_like_hamster));
+                    imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
                 }
                 selectLikeHamsterToHamsterTable(id, likeHamster);
                 break;
@@ -168,6 +173,10 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
         switch (id) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.menu_item_about:
+                Intent intent = new Intent(ViewHamsterActivity.this, AboutMeActivity.class);
+                startActivity(intent);
                 return true;
         }
 

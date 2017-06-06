@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/photo"/>
+
+                <TextView
+                    android:id="@+id/tel"
+                    android:layout_toRightOf="@+id/photo"
+                    android:layout_toEndOf="@+id/photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
+                    android:autoLink="phone"
+                    android:linksClickable="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    style="@style/title01"
+                    android:text="@string/about_me_telefon"/>
+
+                <TextView
+                    android:id="@+id/e_mail"
+                    android:layout_toRightOf="@+id/photo"
+                    android:layout_toEndOf="@+id/photo"
+                    android:layout_below="@+id/tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
+                    android:autoLink="email"
+                    android:linksClickable="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    style="@style/title01"
+                    android:text="@string/about_me_e_mail"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title01"
+                    android:text="@string/about_me_FIO" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:text="@string/about_me_birthday"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:text="@string/about_me_residence" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_desired_position" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_desired_pay" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_experience" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="@string/about_me_experience_all" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_education" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:text="@string/about_me_education_all" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_e_sertificate" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="@string/about_me_e_sertificate_all" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/title02"
+                    android:text="@string/about_me_skills" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/text"
+                    android:autoLink="web"
+                    android:linksClickable="true"
+                    android:text="@string/about_me_skills_all" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
