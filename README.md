@@ -19,5 +19,10 @@
 5. Fragment
 6. RecyclerView
 
-Вот что получилось:
-![Главный экран]("https://img-fotki.yandex.ru/get/6106/705498.0/0_143604_b746c426_orig.png")
+Вот что получилось:  
+<img src="https://img-fotki.yandex.ru/get/6106/705498.0/0_143604_b746c426_L.png" width="281" height="500" border="0" />
+<img src="https://img-fotki.yandex.ru/get/235015/705498.0/0_143605_af1e1c5_L.png" width="281" height="500" border="0" />
+<img src="https://img-fotki.yandex.ru/get/215222/705498.0/0_143602_45bb5352_L.png" width="281" height="500" border="0" />
+<img src="https://img-fotki.yandex.ru/get/6610/705498.0/0_143601_85a93742_L.png" width="281" height="500" border="0" />
+<img src="https://img-fotki.yandex.ru/get/235015/705498.0/0_143603_19d26668_L.png" width="281" height="500" border="0" />
+<img src="https://img-fotki.yandex.ru/get/118251/705498.0/0_143600_62efd56_L.png" width="281" height="500" border="0" />
