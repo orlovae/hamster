@@ -3,13 +3,8 @@ package ru.aleksandrorlov.crazyhamster;
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import retrofit2.Call;
@@ -29,8 +24,6 @@ import ru.aleksandrorlov.crazyhamster.utils.DownloadImage;
 public class App extends Application {
     private ApiUnrealMojo apiUnrealMojo;
 
-    private final String LOG_TAG = this.getClass().getSimpleName();
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,7 +31,6 @@ public class App extends Application {
     }
 
     private void init(){
-        Log.d(LOG_TAG, "Start init");
         apiUnrealMojo = ApiController.getApi();
         apiUnrealMojo.getHamsters().enqueue(new Callback<List<Hamster>>(){
 
@@ -63,8 +55,6 @@ public class App extends Application {
     }
 
     public void checkDataBase (List<Hamster> hamsters){
-        Log.d(LOG_TAG, "Start checkDataBase");
-
         String[] projection = {Contract.Hamster.COLUMN_TITLE, Contract.Hamster.COLUMN_DESCRIPTION,
                 Contract.Hamster.COLUMN_IMAGE_URL};
 
@@ -78,16 +68,12 @@ public class App extends Application {
             getContentResolver().delete(Contract.Hamster.CONTENT_URI, null, null);
             createNewHamsterTable(hamsters);
         }
-
         if (cursor != null) {
             cursor.close();
         }
-
     }
 
     private void createNewHamsterTable(List<Hamster> hamsters){
-        Log.d(LOG_TAG, "Start createNewHamsterTable");
-
         for (Hamster item:hamsters
                 ) {
             ContentValues cv = new ContentValues();
@@ -100,7 +86,6 @@ public class App extends Application {
     }
 
     private void downloadImage () {
-        Log.d(LOG_TAG, "Start downloadImage");
         TreeMap<Integer, String> mapForDownloadImage = new TreeMap<>();
 
         String[] projection = {Contract.Hamster.COLUMN_ID, Contract.Hamster.COLUMN_IMAGE_URL};
@@ -114,7 +99,6 @@ public class App extends Application {
                 do {
                     Integer idFromCursor = cursor.getInt(idColIndex);
                     String imageURLFromCursor = cursor.getString(imageURLColIndex);
-                    Log.d(LOG_TAG, "imageURLFromCursor = " + imageURLFromCursor);
                     mapForDownloadImage.put(idFromCursor, imageURLFromCursor);
                 } while (cursor.moveToNext());
             }
@@ -125,11 +109,8 @@ public class App extends Application {
                 cursor.close();
             }
         }
-
             DownloadImage downloadImage = new DownloadImage(getApplicationContext(),
                     mapForDownloadImage);
             downloadImage.execute();
-            Log.d(LOG_TAG, "downloadImage status is " + downloadImage.getStatus());
-
     }
 }

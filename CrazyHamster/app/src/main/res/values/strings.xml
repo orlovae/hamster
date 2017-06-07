@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Crazy Hamster</string>
+    <string name="app_name">Hamsters</string>
 
     <!-- Tab All Hamster start -->
     <string name="tab_all_hamster">All hamster</string>

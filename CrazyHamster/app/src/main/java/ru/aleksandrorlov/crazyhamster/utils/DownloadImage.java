@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,7 +25,6 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class DownloadImage extends AsyncTask<Void, Void, Void> {
-    private final String LOG_TAG = this.getClass().getSimpleName();
     private final String NAME_DIR = "hamsters";
     private final String SCHEME = "file://";
     private final String ERROR_DOWNLOAD = "error_download_image.png";
@@ -44,8 +42,6 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d(LOG_TAG, "Start doInBackground");
-
         File directory;
         ContextWrapper cw = new ContextWrapper(context);
         boolean SDWrite = isExternalStorageWritable();
@@ -73,7 +69,6 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                     inputStream.close();
                     fileName = createNameFile(url);
                 } catch (Exception e) {
-                    Log.d(LOG_TAG, "Exception: " + fileName + " no download");
                     entry.setValue(pathError);
                     e.printStackTrace();
                 }
@@ -86,17 +81,14 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
                 if (SDWrite) {
                     path = new File(directory, fileName);
                     entry.setValue(path.getAbsolutePath());
-                    Log.d(LOG_TAG, "File save to SD, path = " + path.getAbsolutePath().toString().
-                            substring(path.getAbsolutePath().toString().length()-3,path.getAbsolutePath().toString().length()));
                 } else {
                     path = new File(directory, fileName);
                     entry.setValue(SCHEME + path.getAbsolutePath());
-                    Log.d(LOG_TAG, "File save to internal memory, path = " + path.getAbsolutePath().toString());
                 }
 
                 FileOutputStream out = new FileOutputStream(path);
                 String typeImage = getTypeImage(path);
-                Log.d(LOG_TAG, "typeImage.equals(FILE_EXTENSION_JPG) is " + typeImage.equals(FILE_EXTENSION_JPG));
+
                 if (typeImage.equals(FILE_EXTENSION_JPG)) {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 } else {
@@ -105,9 +97,7 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
 
                 out.flush();
                 out.close();
-
             } catch (Exception e) {
-                Log.d(LOG_TAG, "Exception: " + fileName + " no save");
                 e.printStackTrace();
                 entry.setValue(pathError);
             }
@@ -146,7 +136,8 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         File file = new File(context.getExternalFilesDir(
                 Environment.DIRECTORY_PICTURES), NAME_DIR);
         if (!file.mkdirs()) {
-            Log.e(LOG_TAG, "Directory not created");
+            Exception e = new Exception();
+            e.printStackTrace();
         }
         return file;
     }
@@ -160,7 +151,6 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return bitmap;
     }
 
@@ -175,7 +165,6 @@ public class DownloadImage extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return file;
     }
 

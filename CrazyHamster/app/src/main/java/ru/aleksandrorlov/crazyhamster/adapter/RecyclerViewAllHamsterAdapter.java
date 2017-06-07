@@ -1,24 +1,21 @@
 package ru.aleksandrorlov.crazyhamster.adapter;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+
 
 import java.io.File;
 
@@ -31,14 +28,11 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<RecyclerViewAllHamsterAdapter.ViewHolder>{
-    private final String LOG_TAG = this.getClass().getSimpleName();
-
     private Context context;
-
     private Cursor dataCursor;
-
     private int width, height;
 
+    private final float COMPRESSION_PICTURE = 0.2f;
 
     public RecyclerViewAllHamsterAdapter(Context context, Cursor cursor, int width, int height) {
         this.context = context;
@@ -51,7 +45,6 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
         if (dataCursor == cursor){
             return null;
         }
-
         Cursor oldCursor = dataCursor;
         this.dataCursor = cursor;
         if (cursor != null){
@@ -62,17 +55,13 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        Log.d(LOG_TAG, "Start onCreateViewHolder");
         View view = LayoutInflater.from(context).inflate(R.layout.list_view_item_all_hamster_layout,
                 parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        Log.d(LOG_TAG, "Start onBindViewHolder");
-
         dataCursor.moveToPosition(position);
 
         int idColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_ID);
@@ -80,13 +69,11 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
         int descriptionColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_DESCRIPTION);
         int imagePathColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_IMAGE_PATH);
         int likeHamsterColIndex = dataCursor.getColumnIndex(Contract.Hamster.COLUMN_FAVORITE);
-
         int id = dataCursor.getInt(idColIndex);
+
         String titleFromCursor = dataCursor.getString(titleColIndex);
         String descriptionFromCursor = dataCursor.getString(descriptionColIndex);
         String imagePath = dataCursor.getString(imagePathColIndex);
-
-
         int likeHamster = dataCursor.getInt(likeHamsterColIndex);
         boolean likeHamsterFromCursor = castIntToBoolean(likeHamster);
 
@@ -97,8 +84,8 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 
         Picasso.with(context)
                 .load(imageUri)
-                .resize((int)Math.round(width * 0.2), (int)Math.round(height * 0.2))
-                //TODO вынести в константы коэффициент сжатия картинок.
+                .resize((int)Math.round(width * COMPRESSION_PICTURE),
+                        (int)Math.round(height * COMPRESSION_PICTURE))
                 .placeholder(R.drawable.progress_animation)
                 .into(holder.imageView);
 
@@ -117,18 +104,17 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 
         holder.textViewTitle.setText(titleFromCursor);
         if (likeHamsterFromCursor){
-            holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
+            holder.checkBoxLikeHamster.setChecked(true);
         } else {
-            holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
+            holder.checkBoxLikeHamster.setChecked(false);
         }
-        holder.imageViewLikeHamster.setOnClickListener(new View.OnClickListener() {
-            @Override            public void onClick(View v) {
-                if (holder.imageViewLikeHamster.getDrawable().getConstantState().equals
-                        (ContextCompat.getDrawable(context,
-                                R.drawable.ic_favorite_border_black_18dp).getConstantState())){
-                    holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
+        holder.checkBoxLikeHamster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.checkBoxLikeHamster.isChecked()){
+                    holder.checkBoxLikeHamster.setChecked(true);
                 } else {
-                    holder.imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
+                    holder.checkBoxLikeHamster.setChecked(false);
                 }
                 selectLikeHamsterToHamsterTable(id, likeHamsterFromCursor);
             }
@@ -165,14 +151,13 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
 
     @Override
     public int getItemCount() {
-//        Log.d(LOG_TAG, "Start getItemCount");
         return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle;
-        ImageView imageView, imageViewLikeHamster;
-
+        ImageView imageView;
+        CheckBox checkBoxLikeHamster;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -180,10 +165,9 @@ public class RecyclerViewAllHamsterAdapter extends RecyclerView.Adapter<Recycler
         }
 
         private void initView(View itemView){
-//            Log.d(LOG_TAG, "Start initView");
             imageView = (ImageView)itemView.findViewById(R.id.image_view);
             textViewTitle = (TextView)itemView.findViewById(R.id.text_view_title);
-            imageViewLikeHamster = (ImageView) itemView.findViewById(R.id.image_view_like_hamster);
+            checkBoxLikeHamster = (CheckBox) itemView.findViewById(R.id.like_hamster);
 
         }
     }

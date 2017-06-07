@@ -29,7 +29,6 @@
             android:label="@string/search_result"
             android:theme="@style/AppTheme">
 
-            <!-- to identify this activity as "searchable" -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -39,8 +38,15 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity android:name=".ViewHamsterActivity"
-            android:label="@string/view_hamster" />
+            android:label="@string/view_hamster">
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
+        </activity>
+
         <activity
             android:name=".AboutMeActivity"
             android:label="@string/about_me" />

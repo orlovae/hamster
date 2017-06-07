@@ -16,7 +16,6 @@ import ru.aleksandrorlov.crazyhamster.rest.ApiUnrealMojo;
  */
 
 public class ApiController {
-    private static final String LOG_TAG = "Controller";
     private static final String HAMSTER_BASE_URL = "https://unrealmojo.com/porn/";
 
     static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor
@@ -33,7 +32,6 @@ public class ApiController {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        ApiUnrealMojo apiUnrealMojo = retrofit.create(ApiUnrealMojo.class);
-        return apiUnrealMojo;
+        return retrofit.create(ApiUnrealMojo.class);
     }
 }

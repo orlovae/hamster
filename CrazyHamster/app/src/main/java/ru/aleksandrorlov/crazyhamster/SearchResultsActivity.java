@@ -27,7 +27,6 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class SearchResultsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final String LOG_TAG = getClass().getSimpleName();
     private RecyclerView recyclerViewAllHamster;
     private RecyclerViewAllHamsterAdapter adapter;
     private int height, width;
@@ -79,7 +78,6 @@ public class SearchResultsActivity extends AppCompatActivity implements LoaderMa
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         MenuItem share = menu.findItem(R.id.menu_item_share);
         share.setVisible(false);
         return super.onPrepareOptionsMenu(menu);

@@ -1,19 +1,22 @@
 package ru.aleksandrorlov.crazyhamster;
 
+import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,10 +31,9 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class ViewHamsterActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String LOG_TAG = getClass().getSimpleName();
-
-    private TextView textViewTitle, textViewDiscription;
-    private ImageView imageViewPhotoHamster, imageViewLikeHamster;
+    private TextView textViewTitle, textViewDescription;
+    private ImageView imageViewPhotoHamster;
+    private CheckBox chekBoxLikeHamster;
 
     private ShareActionProvider provider;
 
@@ -72,19 +74,19 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
 
     private void initView(){
         textViewTitle = (TextView)findViewById(R.id.text_view_title);
-        textViewDiscription = (TextView)findViewById(R.id.text_view_description);
+        textViewDescription = (TextView)findViewById(R.id.text_view_description);
         imageViewPhotoHamster = (ImageView)findViewById(R.id.image_view_photo_hamster);
-        imageViewLikeHamster = (ImageView)findViewById(R.id.image_view_like_hamster);
+        chekBoxLikeHamster = (CheckBox) findViewById(R.id.like_hamster);
     }
 
     private void setView(){
         textViewTitle.setText(title);
-        textViewDiscription.setText(description);
+        textViewDescription.setText(description);
 
         if (likeHamster){
-            imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
+            chekBoxLikeHamster.setChecked(true);
         } else {
-            imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
+            chekBoxLikeHamster.setChecked(false);
         }
 
         if (imagePath != null) {
@@ -115,30 +117,26 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
 
     private int castBooleanToInt(boolean likeHamster) {
         if (likeHamster) {
-            return 0;
-        } else {
             return 1;
+        } else {
+            return 0;
         }
     }
 
     private void  onClickBehavior(){
-        imageViewLikeHamster.setOnClickListener(this);
+        chekBoxLikeHamster.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.image_view_like_hamster:
-                Log.d(LOG_TAG, "imageViewLikeHamster = " + imageViewLikeHamster.getDrawable());
-                Log.d(LOG_TAG, "ic_favorite_black_18dp = " + R.drawable.ic_favorite_black_18dp);
-                Log.d(LOG_TAG, "ic_favorite_border_black_18dp = " + R.drawable.ic_favorite_border_black_18dp);
-
-                if (imageViewLikeHamster.getDrawable().getConstantState().equals
-                        (ContextCompat.getDrawable(getApplicationContext(),
-                                R.drawable.ic_favorite_border_black_18dp).getConstantState())){
-                    imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_black_18dp);
+            case R.id.like_hamster:
+                if (chekBoxLikeHamster.isChecked()){
+                    chekBoxLikeHamster.setChecked(true);
+                    likeHamster = true;
                 } else {
-                    imageViewLikeHamster.setImageResource(R.drawable.ic_favorite_border_black_18dp);
+                    chekBoxLikeHamster.setChecked(false);
+                    likeHamster = false;
                 }
                 selectLikeHamsterToHamsterTable(id, likeHamster);
                 break;
@@ -147,22 +145,22 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(LOG_TAG, "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.main, menu);
-
         MenuItem shareItem = menu.findItem(R.id.menu_item_share);
         provider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
         provider.setShareIntent(createShareIntent());
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         return true;
     }
 
     private Intent createShareIntent() {
-        Log.d(LOG_TAG, "createShareIntent");
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("image/*");
         Uri uriImage = Uri.parse(imagePath);
-        Log.d(LOG_TAG, "uriImage = " + uriImage.toString());
         shareIntent.putExtra(Intent.EXTRA_STREAM, uriImage);
         return shareIntent;
     }
@@ -179,7 +177,6 @@ public class ViewHamsterActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

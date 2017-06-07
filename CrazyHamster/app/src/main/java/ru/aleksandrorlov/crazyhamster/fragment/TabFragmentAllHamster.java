@@ -11,7 +11,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class TabFragmentAllHamster extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final String LOG_TAG = getClass().getSimpleName();
     private RecyclerView recyclerViewAllHamster;
     private RecyclerViewAllHamsterAdapter adapter;
     private int height, width;

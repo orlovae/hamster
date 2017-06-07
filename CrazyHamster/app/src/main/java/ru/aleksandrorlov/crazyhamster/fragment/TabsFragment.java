@@ -36,16 +36,12 @@ public class TabsFragment extends Fragment {
     }
 
     private void setTabs(){
-        String nameTabAllHamster = getString(R.string.tab_all_hamster);
-        String nameTabLikeHamster = getString(R.string.tab_like_hamster);
-
         TabFragmentAllHamster fragmentAllHamster = new TabFragmentAllHamster();
         TabFragmentLikeHamster fragmentLikeHamster = new TabFragmentLikeHamster();
 
-
         EasyTabsBuilder.with(easyTabs).addTabs(
-                new TabItem(fragmentAllHamster, nameTabAllHamster),
-                new TabItem(fragmentLikeHamster, nameTabLikeHamster)
+                new TabItem(fragmentAllHamster, getString(R.string.tab_all_hamster)),
+                new TabItem(fragmentLikeHamster, getString(R.string.tab_like_hamster))
         ).Build();
     }
 }

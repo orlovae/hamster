@@ -24,7 +24,6 @@ import ru.aleksandrorlov.crazyhamster.data.Contract;
  */
 
 public class TabFragmentLikeHamster extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private final String LOG_TAG = getClass().getSimpleName();
     private RecyclerView recyclerViewLikeHamster;
     private RecyclerViewAllHamsterAdapter adapter;
     private int height, width;
