@@ -18,6 +18,7 @@
 4. Tab
 5. Fragment
 6. RecyclerView
+7. LoaderMenager
 
 Вот что получилось:  
 <img src="https://img-fotki.yandex.ru/get/6106/705498.0/0_143604_b746c426_L.png" width="281" height="500" border="0" />
